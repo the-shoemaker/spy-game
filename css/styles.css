@@ -364,12 +364,17 @@ footer a:hover {
         filter: brightness(.6);
       }
   }
-
-
-  body #changeLanguage:hover {
-    filter: none;
+  
+@media screen and (max-width: 400px) {
+    #logo {
+        display: none;
+    } 
 }
 
+body #changeLanguage:hover {
+    filter: none;
+}
+    
 
 body button:active {
     scale: .8;
@@ -379,7 +384,9 @@ body button:active {
 
 body #changeLanguage span.active {
     opacity: 1;
-    filter: brightness(.3);
+}
+body #changeLanguage:active {
+    filter: brightness(.5);
 }
 
 #readme-link:active {
