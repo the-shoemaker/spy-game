@@ -1,2 +1,3 @@
 # spy-game
-The game Spy is a game in which everyone sees a topic, for example "India", except for one person who is the spy and sees nothing. Then everyone has to ask each other questions about the shared topic, trying to sus out who doesn't actually know. The spy at the same time has to try and figure out from the questions and answers what the topic is.
+The game Spy is a game in which everyone sees a topic, for example "India", except for one person who is the spy and sees nothing. Then everyone has to ask each other questions about the shared topic, trying to sus out who doesn't actually know. The spy at the same time has to try and figure out from the questions and answers what the topic is, to better hide his diseption.
+The game is over once most people decide on one person they think is the spy. Then the real spy gets revealed.
