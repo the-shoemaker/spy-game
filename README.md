@@ -5,4 +5,4 @@ The game is over once most people decide on one person they think is the spy. Th
 Play at: https://spy.dan-space.ch
 
 ## Session Settings
-When a session is startet, the game will not repeat topics, until there are non left, at which point it will reset the session. If no session is active, topics may repeat.
+When a session is started, the game will not repeat topics, until there are non-left, at which point it will reset the session. If no session is active, topics may repeat.
