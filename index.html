@@ -2,83 +2,32 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Spion</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    /* Dark Mode und vertikale Zentrierung */
-    body {
-      margin: 0;
-      padding: 20px;
-      background-color: #1A191D;
-      color: #EDE8DD;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    .hidden {
-      display: none;
-    }
-    .container {
-      background-color: #434350;
-      max-width: 500px;
-      width: 100%;
-      padding: 20px;
-      box-shadow: 1px 1px 10px -3px #000;
-      border-radius: 10px;
-      border: .4rem solid #434350;
-      text-align: center;
-    }
-    input, button {
-      padding: 10px;
-      margin: 10px;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-    }
-    input {
-      background-color: #333;
-      color: #EDE8DD;
-    }
-    button {
-      background-color: #008080;
-      color: #EDE8DD;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #555;
-    }
-    #revealBox {
-      border: 1px solid #434350;
-      padding: 20px;
-      min-height: 50px;
-      margin: 20px auto;
-      max-width: 300px;
-      font-size: 20px;
-      background-color: #2a2a2a;
-      color: #e0e0e0;
-      transition: background-color 0.3s, border 0.3s;
-    }
-    /* Visuelle Änderung, wenn "Aufdecken" geklickt wurde */
-    #revealBox.revealed {
-      border: 2px dashed #009688;
-      background-color: #263238;
-    }
-  </style>
+  <title>Spy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+  <meta name="description" content="The game Spy is a game in which everyone sees a topic, for example India, except for one person who is the spy and sees nothing.">
+
+  <link rel="manifest" href="site.webmanifest">
+
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+  <button id="changeLanguage"><span id="de" class="active">DE</span><span id="pipe">|</span><span id="en">EN</span></button>
   <div class="container">
     <!-- Startbildschirm -->
     <div id="startScreen">
+      <div id="logo"></div>
       <h1>Spion</h1>
-      <input type="number" id="playerCountInput" min="1" placeholder="Anzahl der Spieler">
-      <br>
-      <!-- Vier separate Buttons -->
+      <input type="number" id="playerCountInput" min="1" placeholder="Anzahl der Spieler" oninput="this.value = this.value.replace(/[^0-9]/g, '')" >
+
       <button id="normalStartButton">Spiel Starten</button>
-      <button id="sessionStartButton">Session Starten</button>
-      <button id="sessionResetButton">Session Zurücksetzen</button>
-      <button id="sessionEndButton">Session Beenden</button>
+      <fieldset id="session-settings">
+        <legend>Session Einstellungen</legend>
+
+        <button id="sessionStartButton">Starten</button>
+        <button id="sessionResetButton">Zurücksetzen</button>
+        <button id="sessionEndButton">Beenden</button>
+        <div id="session-indicator"><p>Session-Modus -<span id="indicator-text">an</span><span id="indicator-dot"></span></p></div>
+      </fieldset>
     </div>
     
     <!-- Spielbildschirm -->
@@ -86,190 +35,12 @@
       <h2 id="topicDisplay"></h2>
       <p id="playerTurn"></p>
       <div id="revealBox"></div>
-      <button id="revealButton">Aufdecken</button>
-      <button id="nextButton">Nächster</button>
+      <button id="actionButton">Aufdecken</button>
     </div>
   </div>
   
   <!-- Einbinden der Themen-Datei -->
-  <script src="topics.js"></script>
-  <script>
-    /***** Globale Variablen *****/
-    let numPlayers = 0;
-    let currentPlayer = 1;
-    let secretPlayer = 0;
-    let chosenCategory = '';
-    let chosenItem = '';
-    
-    // Flag und Pool für den Session-Modus
-    let isSessionMode = false;
-    let sessionTopics = {}; // Wird im Session-Modus als Kopie der globalen Themen genutzt.
-    
-    // Spionen-Wahrscheinlichkeit (default: 1 in 100)
-    const spyProbability = 0.005;
-    let allSpies = false;
-    
-    /***** DOM-Referenzen *****/
-    const startScreen = document.getElementById('startScreen');
-    const gameScreen = document.getElementById('gameScreen');
-    const playerCountInput = document.getElementById('playerCountInput');
-    
-    const normalStartButton = document.getElementById('normalStartButton');
-    const sessionStartButton = document.getElementById('sessionStartButton');
-    const sessionResetButton = document.getElementById('sessionResetButton');
-    const sessionEndButton = document.getElementById('sessionEndButton');
-    
-    const topicDisplay = document.getElementById('topicDisplay');
-    const playerTurn = document.getElementById('playerTurn');
-    const revealBox = document.getElementById('revealBox');
-    
-    const revealButton = document.getElementById('revealButton');
-    const nextButton = document.getElementById('nextButton');
-    
-    /***** Event-Listener *****/
-    normalStartButton.addEventListener('click', startGame);
-    sessionStartButton.addEventListener('click', activateSessionMode);
-    sessionResetButton.addEventListener('click', resetSession);
-    sessionEndButton.addEventListener('click', endSession);
-    revealButton.addEventListener('click', revealItem);
-    nextButton.addEventListener('click', nextPlayer);
-    
-    /***** Funktionen *****/
-    // Aktiviert den Session-Modus
-    function activateSessionMode() {
-      isSessionMode = true;
-      if (!sessionTopics || Object.keys(sessionTopics).length === 0) {
-        sessionTopics = {};
-        for (const key in topics) {
-          sessionTopics[key] = [...topics[key]];
-        }
-      }
-      alert("Session-Modus aktiviert. In dieser Session werden Themen nicht wiederholt, bis sie aufgebraucht sind.");
-    }
-    
-    // Setzt den Session-Pool zurück und startet ihn automatisch neu
-    function resetSession() {
-      isSessionMode = true;
-      sessionTopics = {};
-      for (const key in topics) {
-        sessionTopics[key] = [...topics[key]];
-      }
-      alert("Session wurde zurückgesetzt.");
-    }
-    
-    // Beendet den Session-Modus (setzt den Flag isSessionMode auf false)
-    function endSession() {
-      isSessionMode = false;
-      alert("Session-Modus wurde beendet. Ab jetzt wird im Normalmodus gespielt.");
-    }
-    
-    // Startet eine neue Spielrunde (Wechsel in den Spielbildschirm)
-    // Je nach Modus werden Themen aus globalen oder aus dem Session-Pool gewählt.
-    function startGame() {
-      numPlayers = parseInt(playerCountInput.value);
-      if (!numPlayers || numPlayers < 1) {
-        alert("Bitte gib eine gültige Spielerzahl (mindestens 1) ein.");
-        return;
-      }
-      
-      currentPlayer = 1;
-      revealBox.textContent = "";
-      revealBox.classList.remove("revealed");
-      
-      // Bestimme, ob alle Spieler Spione sind.
-      allSpies = Math.random() < spyProbability;
-      if (!allSpies) {
-        secretPlayer = (numPlayers === 1) ? 1 : Math.floor(Math.random() * numPlayers) + 1;
-      }
-      
-      let topicChosen = false;
-      if (isSessionMode) {
-        topicChosen = pickNewTopicSession();
-      } else {
-        pickNewTopicNormal();
-        topicChosen = true;
-      }
-      
-      if (!topicChosen) {
-        // Diese Stelle sollte eigentlich nie erreicht werden.
-        alert("Es gab ein Problem beim Auswählen eines Themas.");
-        return;
-      }
-      
-      playerTurn.textContent = "Spieler " + currentPlayer + ", du bist an der Reihe.";
-      
-      // Wechsle in den Spielbildschirm.
-      startScreen.classList.add("hidden");
-      gameScreen.classList.remove("hidden");
-    }
-    
-    // Wählt ein Thema aus den globalen Themen (Normalmodus; Wiederholungen möglich)
-    function pickNewTopicNormal() {
-      const categories = Object.keys(topics);
-      chosenCategory = categories[Math.floor(Math.random() * categories.length)];
-      const itemsArray = topics[chosenCategory];
-      chosenItem = itemsArray[Math.floor(Math.random() * itemsArray.length)];
-      topicDisplay.textContent = "Thema: " + chosenCategory.charAt(0).toUpperCase() + chosenCategory.slice(1);
-    }
-    
-    // Wählt ein Thema aus dem Session-Pool (keine Wiederholung, bis Pool zurückgesetzt wird)
-    // Wenn keine Themen mehr vorhanden sind, wird der Pool automatisch zurückgesetzt und neu befüllt.
-    function pickNewTopicSession() {
-      const availableCategories = Object.keys(sessionTopics).filter(cat => sessionTopics[cat].length > 0);
-      if (availableCategories.length === 0) {
-        alert("Keine Themen mehr. Session wird zurückgesetzt.");
-        resetSession();
-        return pickNewTopicSession();
-      }
-      chosenCategory = availableCategories[Math.floor(Math.random() * availableCategories.length)];
-      const itemsArray = sessionTopics[chosenCategory];
-      const itemIndex = Math.floor(Math.random() * itemsArray.length);
-      chosenItem = itemsArray[itemIndex];
-      itemsArray.splice(itemIndex, 1);
-      topicDisplay.textContent = "Thema: " + chosenCategory.charAt(0).toUpperCase() + chosenCategory.slice(1);
-      return true;
-    }
-    
-    // Zeigt den Inhalt (bzw. "Du bist Spion") an, je nach Spielerstatus.
-    function revealItem() {
-      if (revealBox.textContent !== "") return;
-      
-      revealBox.classList.add("revealed");
-      
-      if (allSpies || (currentPlayer === secretPlayer && numPlayers > 1)) {
-        revealBox.textContent = "Du bist Spion";
-      } else {
-        revealBox.textContent = chosenItem;
-      }
-    }
-    
-    // Wechselt zum nächsten Spieler bzw. beendet die Runde und setzt den Spielbildschirm zurück.
-    function nextPlayer() {
-      revealBox.classList.remove("revealed");
-      revealBox.textContent = "";
-      
-      if (currentPlayer < numPlayers) {
-        currentPlayer++;
-        playerTurn.textContent = "Spieler " + currentPlayer + ", du bist an der Reihe.";
-      } else {
-        alert("Runde beendet. Das Spiel wird zurückgesetzt.");
-        resetGame();
-      }
-    }
-    
-    // Setzt den spielbezogenen Status zurück, kehrt zum Startbildschirm zurück;
-    // der eingegebene Spielerwert bleibt im Eingabefeld erhalten.
-    function resetGame() {
-      currentPlayer = 1;
-      secretPlayer = 0;
-      chosenCategory = "";
-      chosenItem = "";
-      revealBox.textContent = "";
-      revealBox.classList.remove("revealed");
-      
-      startScreen.classList.remove("hidden");
-      gameScreen.classList.add("hidden");
-    }
-  </script>
+  <script src="/js/langSwitcher.js" defer></script>
+  <script src="/js/programm.js" defer></script>
 </body>
 </html>

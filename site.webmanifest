@@ -1,0 +1,7 @@
+{
+    "name": "Spy",
+    "short_name": "Spy",
+    "display": "standalone",
+    "theme_color": "#1A191D",
+    "scope": "/"
+}

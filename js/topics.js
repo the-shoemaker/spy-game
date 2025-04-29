@@ -1,4 +1,4 @@
-const topics = {
+window.topics = {
     orte: [
       "Schweiz", "Frankreich", "Deutschland", "Italien", "Spanien",
       "Kanada", "Japan", "Australien", "Brasilien", "Südafrika",

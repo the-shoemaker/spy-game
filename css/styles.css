@@ -1,0 +1,298 @@
+
+/* css clean up */
+
+*{
+    font-family: Arial, Helvetica, sans-serif;
+
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+    text-decoration: none;
+
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+
+    -webkit-user-drag: none;
+
+    word-wrap: break-word;
+
+    /*border: 1px solid red;*/
+}
+
+:root {
+    font-size: 16px;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    cursor: default;
+    opacity: .9;
+}
+
+h2 {
+    margin-bottom: .3rem;
+}
+
+.selectable {
+    user-select: text;
+    -webkit-user-select: text;
+    -ms-user-select: text;
+
+    cursor: text;
+}
+
+.inpextra {
+    position: fixed;
+    left: -500vw; right: -500vw;
+    opacity: 0;
+    pointer-events: none;
+}
+
+span {
+    all: inherit;
+    display: inline;
+}
+
+textarea{
+    min-height: 68px;
+    max-height: 300px;
+    field-sizing: content;
+    resize: vertical;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    background-color: #1A191D;
+    color: #EDE8DD;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url(/background.webp);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+.no-phone {
+    display: block;
+}
+.no-desk {
+    display: none;
+}
+
+/* components */
+
+.hidden {
+  display: none;
+}
+.container {
+  backdrop-filter: blur(50px);
+  max-width: 500px;
+  width: 100%;
+  padding: 1rem;
+  box-shadow: 1px 1px 10px -3px #000;
+  border-radius: 3rem;
+  border: 1px solid #c3c3cf4a;
+  text-align: center;
+}
+#startScreen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+input, button {
+    font-size: 1rem;
+    line-height: 1.1rem;
+  padding: 10px;
+  min-width: 1rem;
+  width: 100%;
+  max-width: 15rem;
+  font-size: 16px;
+  border: none;
+  border-radius: .5rem;
+}
+input {
+    border: 1px solid #ffffff57;
+  background-color: #33333346;
+  color: #EDE8DD;
+  text-align: center;
+  padding-left: 23px;
+}
+input:focus {
+    outline: none;
+    background-color: #b1b1b168;
+}
+
+button {
+  background-color: #008080;
+  color: #EDE8DD;
+  cursor: pointer;
+  transition: background-color .2s ease, scale .2s ease, filter .2s ease;
+  
+}
+#sessionEndButton {
+    background-color: #9c1e1e;
+}
+
+#revealBox {
+    border: 2px solid #ffffff57;
+    background-color: #33333346;
+  padding: 20px;
+  min-height: 4.2rem;
+  margin: 20px auto;
+  max-width: 300px;
+  font-size: 20px;
+  border-radius: 1rem;
+  color: #e0e0e0;
+  transition: background-color 0.3s, border 0.3s;
+}
+/* Visuelle Änderung, wenn "Aufdecken" geklickt wurde */
+#revealBox.revealed {
+  border: 2px dashed #009688;
+  background-color: #263238;
+}
+#normalStartButton {
+  background-color: #9a0d0d;
+}
+body button:hover {
+  scale: 1.05;
+  filter: brightness(.6);
+}
+body button:active {
+    scale: .8;
+  background-color: #7c7c7c !important;
+}
+#logo {
+  left: 50%; top: -11rem;
+  transform: translateX(-50%);
+  position: absolute;
+  width: 7.5rem; aspect-ratio: 1;
+  background-image: url(/logo.svg);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 0 15px #ffffff46);
+}
+
+body #changeLanguage {
+    background: none !important;
+    position: fixed;
+    color: #EDE8DD;
+    font-size: 1rem;
+    z-index: 100;
+    display: flex;
+    width: auto; 
+    top: 2rem; right: 1.7rem;
+}
+body #changeLanguage span {
+    top: 0; left: 0;
+    margin: none;
+    padding: none;
+    opacity: .6;
+    position: relative;
+}
+body #changeLanguage span.active {
+    opacity: 1;
+}
+    
+#pipe {
+    margin-top: -.2rem;
+}
+
+#session-settings {
+    display: flex;
+    padding: calc(1.5rem - 9px) 1.5rem;
+    border-radius: 2rem;
+    border: 1px solid #EDE8DD;
+    flex-wrap: wrap;
+    gap: .7rem;
+}
+#session-settings legend {
+    padding: 0 .5rem;
+}
+
+#session-settings button {
+    flex: 1 1 0;
+    width: none;
+    min-width: 8rem;
+    font-size: 1rem;
+    height: 3rem;
+    max-width: none;
+    padding: 10px;
+}
+body #session-settings button:disabled {
+    pointer-events: none;
+    cursor: default;
+    opacity: .6;
+    background-color: #6a6a6a !important;
+    scale: 1 !important;
+    filter: none !important;
+}
+
+#startScreen p {
+    display: flex;
+    width: max-content;
+    align-items: center;
+    gap: .2rem;
+  }
+#indicator-dot {
+    display: block;
+    position: relative;
+    width: .5rem; aspect-ratio: 1;
+    border-radius: 1rem;
+    margin-left: .3rem;
+    background-color: white;
+    /* transition: background-color .2s ease; */
+}
+#indicator-dot.on {
+    background-color: rgb(0, 224, 0);
+}
+
+#session-indicator {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+footer {
+    display: block;
+
+}
+
+
+/* overwrites */
+
+.hover {
+    transition: opacity .2s ease;
+}
+.hover:hover {
+    opacity: .6;   
+}
+
+.hover-scale {
+    transition: scale .2s ease, opacity .2s ease;
+}
+.hover-scale:hover {
+    opacity: .6;
+    scale: .93;
+}
+.selectable::selection {
+    color: #F23317;
+}
+
+
+.hidden {
+    display: none !important;
+    pointer-events: none;
+}
+
+body #changeLanguage:hover {
+    filter: none;
+}
