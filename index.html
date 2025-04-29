@@ -2,30 +2,36 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Spy</title>
+  <title>Spy Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
   <meta name="description" content="The game Spy is a game in which everyone sees a topic, for example India, except for one person who is the spy and sees nothing.">
 
-  <link rel="manifest" href="site.webmanifest">
+  <link rel="manifest" href="/site.webmanifest">
 
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/nsb-box.css">
+
+  <link rel="icon" type="image/png" href="/favicons/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
 </head>
 <body>
   <button id="changeLanguage"><span id="de" class="active">DE</span><span id="pipe">|</span><span id="en">EN</span></button>
   <div class="container">
     <!-- Startbildschirm -->
     <div id="startScreen">
+      <a href="/README.md" id="readme-link" aria-label="README Link" class="nsbbox"></a>
+
       <div id="logo"></div>
       <h1>Spion</h1>
-      <input type="number" id="playerCountInput" min="1" placeholder="Anzahl der Spieler" oninput="this.value = this.value.replace(/[^0-9]/g, '')" >
+      <input type="tel" id="playerCountInput" min="3" placeholder="Anzahl der Spieler" oninput="this.value = this.value.replace(/[^0-9]/g, '')" >
 
       <button id="normalStartButton">Spiel Starten</button>
       <fieldset id="session-settings">
         <legend>Session Einstellungen</legend>
 
-        <button id="sessionStartButton">Starten</button>
+        <button id="session-toggle">Starten</button>
         <button id="sessionResetButton">Zurücksetzen</button>
-        <button id="sessionEndButton">Beenden</button>
         <div id="session-indicator"><p>Session-Modus -<span id="indicator-text">an</span><span id="indicator-dot"></span></p></div>
       </fieldset>
     </div>
@@ -42,5 +48,10 @@
   <!-- Einbinden der Themen-Datei -->
   <script src="/js/langSwitcher.js" defer></script>
   <script src="/js/programm.js" defer></script>
+  <script src="/js/nsb-box.js" defer></script>
+
+  <footer>
+    <a href="/impressum/">Impressum</a><p>•</p><a href="/datenschutz/">DSG / DSGVO</a><p>•</p><a href="https://www.instagram.com/chromatic_dan/" target="_blank" class="hover">© Dan Schumacher</a>
+  </footer>
 </body>
 </html>

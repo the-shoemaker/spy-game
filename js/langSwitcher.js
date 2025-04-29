@@ -2,7 +2,6 @@
 
 // Wörterbuch Deutsch → Englisch (hier weitere Einträge ergänzen)
 const dictionary = {
-    "Session wurde zurückgesetzt": "Session was reset",
     "Es muss mindestens drei Spieler haben": "At least three players are needed",
     "Keine Themen mehr, Session wird zurückgesetzt": "Out of topics, resetting session",
     "Spiel Starten": "Start Game",
