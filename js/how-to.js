@@ -1,56 +1,37 @@
 // how-to.js
+// Lädt die How-To-Texte für DE/EN und zeigt sie in einem Dialog
+
 document.addEventListener('DOMContentLoaded', () => {
-  const readmeLink   = document.getElementById('readme-link');
-  const dialog       = document.getElementById('alert-dialog');
-  const alertText    = document.getElementById('alert-text');
-  const closeButton  = document.getElementById('close');
-  const langToggle   = document.getElementById('changeLanguage');
+  const readmeLink  = document.getElementById('readme-link');
+  const dialog      = document.getElementById('alert-dialog');
+  const alertText   = document.getElementById('alert-text');
+  const closeButton = document.getElementById('close');
+  const langToggle  = document.getElementById('changeLanguage');
 
-  // Damit man den Text markieren kann
-  alertText.classList.add('selectable');
+  alertText.classList.add('selectable'); // Text markierbar machen
 
-  readmeLink.addEventListener('click', async (e) => {
+  readmeLink.addEventListener('click', async e => {
     e.preventDefault();
-
-    // Aktive Sprache ermitteln
     const activeSpan = langToggle.querySelector('.active');
     const lang = activeSpan ? activeSpan.id : 'de';
-
-    // Relativer Pfad
-    const txtPath = `how-to-${lang}.txt`;
-    console.log('[how-to] Lade:', txtPath);
+    // Absoluter Pfad, damit es auf dem Server funktioniert
+    const txtPath = `/how-to-${lang}.txt`;
+    console.log('[how-to] Lade', txtPath);
 
     try {
-      const response = await fetch(txtPath);
+      const response = await fetch(txtPath, { cache: 'no-cache' });
       if (!response.ok) throw new Error(`Status ${response.status}`);
       const textContent = await response.text();
-
-      // Zeilenumbrüche erhalten
-      alertText.innerHTML = `<pre>${textContent}</pre>`;
-
-      // Dialog öffnen
-      if (typeof dialog.showModal === 'function') {
-        dialog.showModal();
-      } else {
-        dialog.setAttribute('open', '');
-      }
+      alertText.innerHTML = textContent;
+      if (dialog.showModal) dialog.showModal(); else dialog.setAttribute('open', '');
     } catch (err) {
-      console.error('[how-to] Fetch-Fehler:', err);
-      alertText.textContent = `Fehler: ${err.message}`;
-      if (typeof dialog.showModal === 'function') {
-        dialog.showModal();
-      } else {
-        dialog.setAttribute('open', '');
-      }
+      console.error('[how-to] Fehler beim Laden', err);
+      alertText.textContent = `Fehler beim Laden: ${err.message}`;
+      if (dialog.showModal) dialog.showModal(); else dialog.setAttribute('open', '');
     }
   });
 
-  // Dialog schliessen
   closeButton.addEventListener('click', () => {
-    if (typeof dialog.close === 'function') {
-      dialog.close();
-    } else {
-      dialog.removeAttribute('open');
-    }
+    if (dialog.close) dialog.close(); else dialog.removeAttribute('open');
   });
 });
