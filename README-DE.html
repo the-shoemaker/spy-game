@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0A363E"/>
+  <title>README-DE</title>
+  <style>
+    :root {
+      --color: #0A363E;
+    }
+    a {
+    outline: none;
+    color: #910100;
+}
+a:visited {
+    outline: none;
+    color: #916100;
+}
+    body {
+      background-color: #0A363E;
+      color: #EDE8DD;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      padding-bottom: 7rem;
+    }
+    #content {
+      max-width: 800px;
+      margin: auto;
+      padding: 16px;
+    }
+    img, table {
+      max-width: 100%;
+      height: auto;
+    }
+    pre {
+      background: rgba(0,0,0,0.1);
+      overflow-x: auto;
+      padding: 12px;
+      border-radius: 6px;
+    }
+    code {
+      background: rgba(0,0,0,0.1);
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
+    .go-back-wrapper {
+        position: fixed;
+        left: 0; bottom: 38px;
+        width: calc(100% - 2rem);
+        left: 1rem;
+        display: flex;
+        justify-content: center;
+        pointer-events: none;
+        z-index: 10;
+    }
+    .go-back {
+        all: unset;
+        display: flex;
+        align-items: center;
+        border-radius: 4rem;
+        text-align: center;
+        padding: 16px 28px;
+        box-shadow: 0 5px 15px -8px #1414148e;
+        transition: background-color .3s ease-in-out, box-shadow .3s ease-in-out, scale .2s ease,  color .3s ease-in-out;
+        background-color: white;
+        pointer-events: all;
+    }
+    .go-back:hover {
+        background-color: #7bbfc9;
+        box-shadow: 0 5px 35px -10px #1414148e;
+        scale: .93;
+        opacity: 1;
+    }
+    .go-back span {
+        color: var(--color);
+        font-size: 20px;
+    }
+    .go-back:hover span {
+        color: white;
+    }
+  </style>
+</head>
+<body>
+  <div id="content">
+    <h1>Lade Inhalt...</h1>
+  </div>
+
+  <div class="go-back-wrapper"><a class="go-back hover-scale" href="/"><span>Zurück zur Seite</span></a></div>
+
+  <!-- Variabeln: ändere targetLang zu 'EN' oder 'DE' -->
+  <script>
+    const targetLang = 'DE'; // 'EN' oder 'DE'
+
+    // Markdown-Parser laden
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
+    script.onload = () => {
+      fetch('README.md')
+        .then(res => res.text())
+        .then(md => {
+          let section = '';
+          if (targetLang === 'EN') {
+            const enRegex = /^EN\s*[\r\n]+([\s\S]*?)(?=^DE\s*[\r\n]+)/gmi;
+            const match = enRegex.exec(md);
+            section = match ? match[1] : '';
+          } else {
+            const deRegex = /^DE\s*[\r\n]+([\s\S]*)/gmi;
+            const match = deRegex.exec(md);
+            section = match ? match[1] : '';
+          }
+          const html = marked.parse(section);
+          document.getElementById('content').innerHTML = html;
+        })
+        .catch(err => {
+          document.getElementById('content').innerHTML = '<p>Fehler beim Laden der Datei: ' + err.message + '</p>';
+        });
+    };
+    document.head.appendChild(script);
+  </script>
+</body>
+</html>

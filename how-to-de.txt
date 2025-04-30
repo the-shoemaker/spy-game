@@ -1,0 +1,9 @@
+<h3>Spion Spiel</h3>
+<br>
+Bei „Spion“ erhalten alle Spielenden dasselbe geheime Thema – zum Beispiel „Indien“ – ausser einer Person: der Spion*in, die keine Informationen bekommt. Durch themenbezogene Fragen versuchen die Mitspielenden, die Spion*in zu enttarnen, während diese versucht, das Thema aus dem Gespräch zu erschliessen, um unauffällig zu bleiben.
+<br><br>
+Das Spiel endet, wenn sich die Gruppe auf eine verdächtige Person einigt oder die Spion*in das Thema korrekt errät. Danach wird die wahre Identität aufgedeckt.
+<br><br>
+Mehr zu Einstellungen und Regeln: <a href="/README-DE.html">README.md</a>
+<br>GitHub-Repository: <a href="https://github.com/the-shoemaker/spy-game" target="_blank">GitHub / Spy Game</a>
+<br>

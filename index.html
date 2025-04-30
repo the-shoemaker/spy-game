@@ -2,14 +2,19 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Spy Game</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-  <meta name="description" content="The game Spy is a game in which everyone sees a topic, for example India, except for one person who is the spy and sees nothing.">
+  <title>Spion Spiel</title>
+  <meta name="viewport"
+      content="width=device-width,
+               initial-scale=1.0,
+               maximum-scale=1.0,
+               user-scalable=no">
+  <meta name="description" content="The game Spy is a party game where all players except one are given a common topic — for example, India. One player, the spy, receives no information. The goal for the others is to identify the spy by asking and answering questions about the topic.">
   <meta name="google-site-verification" content="qToCIMAGnkVqEOcu7TmQWETekJzMnAuN5LIxX9nGzHs" />
 
   <link rel="manifest" href="/site.webmanifest">
 
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/nsb-box.css">
 
   <link rel="icon" type="image/png" href="/favicons/favicon-96x96.png" sizes="96x96" />
   <link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg" />
@@ -20,19 +25,20 @@
   <div class="container">
     <!-- Startbildschirm -->
     <div id="startScreen">
-      <a href="https://raw.githubusercontent.com/the-shoemaker/spy-game/refs/heads/main/README.md" id="readme-link" aria-label="README Link"></a>
+      <a id="readme-link" aria-label="README Link"></a>
 
       <div id="logo"></div>
       <h1>Spion</h1>
-      <input type="tel" id="playerCountInput" min="3" placeholder="Anzahl der Spieler" oninput="this.value = this.value.replace(/[^0-9]/g, '')" >
+      <input type="tel" id="playerCountInput" required placeholder="Anzahl der Spieler" pattern="^(?:[3-9]|[1-9]\d+)$" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" >
 
       <button id="normalStartButton">Spiel Starten</button>
+      <button id="topicSelection">Themenauswahl</button>
       <fieldset id="session-settings">
-        <legend>Session Einstellungen</legend>
+        <legend>Sitzungseinstellungen</legend>
 
         <button id="session-toggle">Starten</button>
         <button id="sessionResetButton">Zurücksetzen</button>
-        <div id="session-indicator"><p>Session-Modus -<span id="indicator-text">an</span><span id="indicator-dot"></span></p></div>
+        <div id="session-indicator"><p>Sitzungsmodus -<span id="indicator-text">an</span><span id="indicator-dot"></span></p></div>
       </fieldset>
     </div>
     
@@ -44,15 +50,50 @@
       <button id="actionButton">Aufdecken</button>
     </div>
   </div>
-  
-  <!-- Einbinden der Themen-Datei -->
-  <script src="/js/langSwitcher.js" defer></script>
-  <script src="/js/programm.js" defer></script>
+
+  <dialog id="alert-dialog">
+    <p id="alert-text"></p>
+    <button id="close" type="button">Schliessen</button>
+  </dialog>
+
+  <div id="dialogWebApp" class="dialog-overlay">
+    <div class="dialog-content">
+      <p>Installieren Sie unsere Web-App für eine bessere Erfahrung!</p>
+      <button id="addWebApp">App Installieren</button>
+      <button id="shareWebApp">Teilen zur Startseite (iOS)</button>
+      <button id="dismissWebApp">Schliessen</button>
+    </div>
+  </div>
 
   <footer>
     <a href="/impressum/">Impressum</a><p>•</p>
     <a href="/datenschutz/">DSG / DSGVO</a><p>•</p>
     <a href="https://www.instagram.com/chromatic_dan/" target="_blank" class="hover">© Dan Schumacher</a>
   </footer>
+
+  <div id="topic-selection-wrapper">
+    <button id="select-all-topics">Alle Themen</button>
+    <button id="exit-selection">X</button>
+    <div id="topic-selection-scroll">
+
+      <label class="topic">
+        <h3 class="topic-title">Test dwn dojdaw dionwad dwhuwhd ui wduhduiwahd ahdw dhd</h3>
+        <input class="topic-checkbox" type="checkbox">
+      </label>
+
+    </div>
+  </div>
+
+  <!-- scripts -->
+
+  <script src="/js/langSwitcher.js" defer></script>
+  <script src="/js/programm.js" defer></script>
+  <script src="/js/nsb-box.js" defer></script>
+  <script src="/js/how-to.js" defer></script>
+  <script src="/js/webApp.js" defer></script>
+
+  <script src="/js/safari-fix.js"></script>
 </body>
 </html>
+
+<script>document.addEventListener('dblclick', e => e.preventDefault());</script>

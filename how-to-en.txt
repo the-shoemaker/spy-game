@@ -1,0 +1,9 @@
+<h3>Spy Game</h3>
+<br>
+In "Spy", all players receive the same secret topic — such as "India" — except one: the spy, who gets no information. Players ask each other questions related to the topic to expose the spy, while the spy tries to deduce the topic through the conversation to stay hidden.
+<br><br>
+The game ends when the group agrees on a suspect or the spy correctly guesses the topic. The spy's identity is then revealed.
+<br><br>
+More on settings and rules: <a href="/README-EN.html">README.md</a>
+<br>GitHub Repository: <a href="https://github.com/the-shoemaker/spy-game" target="_blank">GitHub / Spy Game</a>
+<br>
