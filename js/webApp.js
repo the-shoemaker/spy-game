@@ -1,19 +1,14 @@
 (function() {
   let deferredPrompt = null;
 
-  // 1) Wir holen uns die DOM-Elemente erst, wenn sie da sind
   function init() {
-    const dialog     = document.getElementById('dialogWebApp');     // <-- ID korrigiert
+    const dialog     = document.getElementById('dialogWebApp');
     const dismissBtn = document.getElementById('dismissWebApp');
     const addBtn     = document.getElementById('addWebApp');
     const shareBtn   = document.getElementById('shareWebApp');
-
-    // Falls der Dialog nicht existiert, nichts tun
     if (!dialog) return;
 
     const COOKIE_NAME = 'dialogWebAppDismissed';
-
-    // Cookie-Helper
     function setDismissCookie() {
       document.cookie = `${COOKIE_NAME}=true; path=/; max-age=315360000`;
     }
@@ -21,7 +16,6 @@
       return document.cookie.split('; ').some(c => c.startsWith(`${COOKIE_NAME}=`));
     }
 
-    // PWA-Erkennung
     function isStandalone() {
       const ua = navigator.userAgent.toLowerCase();
       const isIos = /iphone|ipad|ipod/.test(ua);
@@ -32,7 +26,6 @@
       return /Mobi|Android|iP(hone|od|ad)|Windows Phone|webOS/.test(navigator.userAgent);
     }
 
-    // Dialog zeigen/verstecken
     function showDialog() {
       dialog.classList.add('show');
     }
@@ -41,43 +34,54 @@
       if (store) setDismissCookie();
     }
 
-    // Initial: nur auf Mobile, ausserhalb PWA und nicht wenn bereits dismissed
-    if (!isMobileDevice() || isStandalone() || isDismissed()) return;
-    showDialog();
+    // Nur auf Mobile und ausserhalb PWA
+    if (!isMobileDevice()) return;
+    if (isStandalone()) {
+      document.body.classList.add('web-app');
+      return;
+    }
+    if (!isDismissed()) showDialog();
 
-    // ■ Events
-    // Schliessen-Button
+    // Dialog dismiss
     dismissBtn.addEventListener('click', () => hideDialog(true));
-    // Klick ausserhalb (Overlay)
     dialog.addEventListener('click', e => {
       if (e.target === dialog) hideDialog(true);
     });
-    // Install-Prompt (Chrome/Android)
+
+    // Install-Prompt
     window.addEventListener('beforeinstallprompt', e => {
       e.preventDefault();
       deferredPrompt = e;
       addBtn.style.display = 'inline-block';
     });
+
     addBtn.addEventListener('click', async () => {
       if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      deferredPrompt = null;
-      hideDialog(false);
+      try {
+        deferredPrompt.prompt();
+        const choice = await deferredPrompt.userChoice;
+        if (choice.outcome !== 'accepted') throw new Error('Installation abgelehnt');
+      } catch (err) {
+        showAlert(`Installationsfehler: ${err.message}`);
+      } finally {
+        deferredPrompt = null;
+        hideDialog(false);
+      }
     });
-    // Share-Button
+
+    // Share / Add to Home fallback
     shareBtn.addEventListener('click', async () => {
       if (navigator.share) {
         try {
           await navigator.share({ title: document.title, url: window.location.href });
-        } catch (err) { console.warn('Sharing failed:', err); }
+        } catch (err) {
+          showAlert(`Teilen fehlgeschlagen: ${err.message}`);
+        }
       } else {
-        // wenn du hier einen Alert willst, nutze showAlert aus programm.js
-        alert('Teilen nicht unterstützt');
+        showAlert('Zum Installieren bitte im Teilen-Menü „Zum Home-Bildschirm“ auswählen.');
       }
     });
   }
 
-  // Init erst, wenn DOM bereit
   window.addEventListener('DOMContentLoaded', init);
 })();
