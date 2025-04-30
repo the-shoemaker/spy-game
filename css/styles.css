@@ -91,6 +91,7 @@ body {
 
 a {
     outline: none;
+    cursor: pointer !important;
     color: #910100;
 }
 a:visited {
