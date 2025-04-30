@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const activeSpan = langToggle.querySelector('.active');
     const lang = activeSpan ? activeSpan.id : 'de';
     // Absoluter Pfad, damit es auf dem Server funktioniert
-    const txtPath = `/how-to-${lang}.txt`;
+    const txtPath = `/how-to-${lang}.html`;
     console.log('[how-to] Lade', txtPath);
 
     try {
