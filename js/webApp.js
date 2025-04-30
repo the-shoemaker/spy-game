@@ -34,7 +34,7 @@
       if (store) setDismissCookie();
     }
 
-    // Nur auf Mobile und ausserhalb PWA
+    // Mobile-only and not in PWA
     if (!isMobileDevice()) return;
     if (isStandalone()) {
       document.body.classList.add('web-app');
@@ -42,21 +42,29 @@
     }
     if (!isDismissed()) showDialog();
 
-    // Dialog dismiss
+    // Dismiss on × or click outside content
     dismissBtn.addEventListener('click', () => hideDialog(true));
     dialog.addEventListener('click', e => {
       if (e.target === dialog) hideDialog(true);
     });
+    // Also any click outside .dialog-content
+    document.addEventListener('click', e => {
+      if (dialog.classList.contains('show') && !e.target.closest('#dialogWebApp .dialog-content') && e.target.id !== 'topicSelection') {
+        hideDialog(true);
+      }
+    });
 
-    // Install-Prompt
+    // Install prompt
     window.addEventListener('beforeinstallprompt', e => {
       e.preventDefault();
       deferredPrompt = e;
       addBtn.style.display = 'inline-block';
     });
-
     addBtn.addEventListener('click', async () => {
-      if (!deferredPrompt) return;
+      if (!deferredPrompt) {
+        showAlert('Installation derzeit nicht verfügbar');
+        return;
+      }
       try {
         deferredPrompt.prompt();
         const choice = await deferredPrompt.userChoice;
@@ -69,16 +77,15 @@
       }
     });
 
-    // Share / Add to Home fallback
-    shareBtn.addEventListener('click', async () => {
-      if (navigator.share) {
-        try {
-          await navigator.share({ title: document.title, url: window.location.href });
-        } catch (err) {
-          showAlert(`Teilen fehlgeschlagen: ${err.message}`);
-        }
+    // Share / Add to Home fallback for iOS
+    shareBtn.addEventListener('click', () => {
+      const ua = navigator.userAgent.toLowerCase();
+      const isiOS = /iphone|ipad|ipod/.test(ua);
+      if (navigator.share && !isiOS) {
+        navigator.share({ title: document.title, url: window.location.href })
+          .catch(err => showAlert(`Teilen fehlgeschlagen: ${err.message}`));
       } else {
-        showAlert('Zum Installieren bitte im Teilen-Menü „Zum Home-Bildschirm“ auswählen.');
+        showAlert('Zum Installieren im Teilen-Menü „Zum Home-Bildschirm“ wählen.');
       }
     });
   }
