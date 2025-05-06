@@ -15,6 +15,11 @@ When a session is active, topics will not repeat until all have been used. Once 
 
 You can customize your game by selecting from various topic categories to match your interests.
 
+## Rules
+
+- After everyone has seen the topic, players may ask yes-or-no questions to anyone.
+- Do not give examples under any circumstances — it never ends well.
+
 DE
 # Spion Spiel
 
@@ -31,3 +36,8 @@ Solange eine Sitzung aktiv ist, werden Themen nicht wiederholt, bis alle einmal 
 ## Themenauswahl
 
 In der Themenauswahl kannst du aus verschiedenen Themenkategorien wählen, um das Spiel deinen Interessen anzupassen.
+
+## Regeln
+
+- Sobald alle das Thema gesehen haben, dürfen Ja-/Nein-Fragen an beliebige Personen gestellt werden.
+- Gib unter keinen Umständen ein Beispiel – das geht fast nie gut aus.

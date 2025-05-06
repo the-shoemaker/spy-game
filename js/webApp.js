@@ -1,3 +1,4 @@
+// script.js
 (function() {
   let deferredPrompt = null;
 
@@ -5,8 +6,20 @@
     const dialog     = document.getElementById('dialogWebApp');
     const dismissBtn = document.getElementById('dismissWebApp');
     const addBtn     = document.getElementById('addWebApp');
-    const shareBtn   = document.getElementById('shareWebApp');
+    // shareBtn no longer used/queried
+
     if (!dialog) return;
+
+    // detect platforms once
+    const ua        = navigator.userAgent.toLowerCase();
+    const isIos     = /iphone|ipad|ipod/.test(ua);
+    const isAndroid = /android/.test(ua);
+
+    // always hide the install button by default…
+    addBtn.style.display = 'none';
+    // …and show the little “iOS hint” only on iOS
+    const iosText = dialog.querySelector('.ios-text');
+    if (iosText) iosText.style.display = isIos ? 'block' : 'none';
 
     const COOKIE_NAME = 'dialogWebAppDismissed';
     function setDismissCookie() {
@@ -17,13 +30,11 @@
     }
 
     function isStandalone() {
-      const ua = navigator.userAgent.toLowerCase();
-      const isIos = /iphone|ipad|ipod/.test(ua);
       return (isIos && window.navigator.standalone === true)
           || window.matchMedia('(display-mode: standalone)').matches;
     }
     function isMobileDevice() {
-      return /Mobi|Android|iP(hone|od|ad)|Windows Phone|webOS/.test(navigator.userAgent);
+      return /Mobi|Android|iP(hone|od|ad)|Windows Phone|webOS/.test(ua);
     }
 
     function showDialog() {
@@ -34,7 +45,7 @@
       if (store) setDismissCookie();
     }
 
-    // Mobile-only and not in PWA
+    // only mobile, not PWA
     if (!isMobileDevice()) return;
     if (isStandalone()) {
       document.body.classList.add('web-app');
@@ -42,20 +53,22 @@
     }
     if (!isDismissed()) showDialog();
 
-    // Dismiss on × or click outside content
+    // always allow closing
     dismissBtn.addEventListener('click', () => hideDialog(true));
     dialog.addEventListener('click', e => {
       if (e.target === dialog) hideDialog(true);
     });
-    // Also any click outside .dialog-content
     document.addEventListener('click', e => {
-      if (dialog.classList.contains('show') && !e.target.closest('#dialogWebApp .dialog-content') && e.target.id !== 'topicSelection') {
+      if (dialog.classList.contains('show')
+          && !e.target.closest('#dialogWebApp .dialog-content')
+          && e.target.id !== 'topicSelection') {
         hideDialog(true);
       }
     });
 
-    // Install prompt
+    // Install prompt: only on Android
     window.addEventListener('beforeinstallprompt', e => {
+      if (!isAndroid) return;
       e.preventDefault();
       deferredPrompt = e;
       addBtn.style.display = 'inline-block';
@@ -74,18 +87,6 @@
       } finally {
         deferredPrompt = null;
         hideDialog(false);
-      }
-    });
-
-    // Share / Add to Home fallback for iOS
-    shareBtn.addEventListener('click', () => {
-      const ua = navigator.userAgent.toLowerCase();
-      const isiOS = /iphone|ipad|ipod/.test(ua);
-      if (navigator.share && !isiOS) {
-        navigator.share({ title: document.title, url: window.location.href })
-          .catch(err => showAlert(`Teilen fehlgeschlagen: ${err.message}`));
-      } else {
-        showAlert('Zum Installieren im Teilen-Menü „Zum Home-Bildschirm“ wählen.');
       }
     });
   }

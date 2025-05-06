@@ -76,10 +76,13 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100dvh;
+    min-height: calc(100svh + env(safe-area-inset-top));
     background-image: url(/images/background.webp);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+
+    padding: env(safe-area-inset-top) 20px 20px 20px;
   }
 
 .no-phone {
@@ -172,7 +175,7 @@ button {
 #revealBox {
     border: 2px solid #ffffff57;
     background-color: #33333346;
-  padding: 20px;
+  padding: 21px 20px 20px 20px;
   min-height: 4.3rem;
   max-width: 300px;
   font-size: 20px;
@@ -227,13 +230,43 @@ body #changeLanguage span {
 }
 
 #session-settings {
+    position: relative;
     display: flex;
     padding: calc(1.5rem - 9px) 1.5rem;
-    border-radius: 2rem;
-    border: 1px solid #EDE8DD;
+    /* border-radius: 2rem;
+    border: 1px solid #EDE8DD; */
+    border: none;
     flex-wrap: wrap;
-    gap: .7rem;
+    gap: .85rem;
+    margin-bottom: -1.3rem !important;
 }
+#session-settings .border {
+    position: absolute;
+    pointer-events: none;
+    top: -.6rem; left: 0;
+    border-radius: 2rem;
+    width: 100%; height: calc(100% - .85rem);
+}
+#session-settings .border.top {
+    border-top: 1px solid #EDE8DD;
+    mask-image: linear-gradient(90deg, #000 calc(50% - 5.5rem), #00000000 calc(50% - 5.5rem), #00000000 calc(50% + 5.5rem), #000 calc(50% + 5.5rem));
+    border-left: 1px solid #EDE8DD;
+    border-right: 1px solid #EDE8DD;
+}
+body:has(#en.active) #session-settings .border.top {
+    mask-image: linear-gradient(90deg, #000 calc(50% - 4.4rem), #00000000 calc(50% - 4.4rem), #00000000 calc(50% + 4.4rem), #000 calc(50% + 4.4rem));
+}
+
+#session-settings .border.bottom {
+    border-bottom: 1px solid #EDE8DD;
+    border-left: 1px solid #EDE8DD;
+    border-right: 1px solid #EDE8DD;
+    mask-image: linear-gradient(90deg, #000 calc(50% - 5.6rem), #00000000 calc(50% - 5.6rem), #00000000 calc(50% + 5.8rem), #000 calc(50% + 5.8rem));
+}
+body:has(#en.active) #session-settings .border.bottom {
+    mask-image: linear-gradient(90deg, #000 calc(50% - 5.3rem), #00000000 calc(50% - 5.3rem), #00000000 calc(50% + 5.5rem), #000 calc(50% + 5.5rem));
+}
+
 #session-settings legend {
     margin: 0 auto;
     padding: 0 .5rem;
@@ -366,9 +399,18 @@ footer a:hover {
 
 body.web-app footer {
     padding: .7rem 1rem 1.3rem 1rem;
+    bottom: calc(0% - env(safe-area-inset-top));
 }
 body.web-app .container {
     margin-bottom: 4rem;
+}
+
+body.web-app #changeLanguage {
+    top: calc(2rem + env(safe-area-inset-top));
+}
+
+body.web-app #exit-selection {
+    top: calc(2rem + env(safe-area-inset-top));
 }
 
 #alert-dialog, #dialogWebApp {
@@ -421,7 +463,7 @@ body.web-app .container {
 }
 
 body.web-app #alert-dialog {
-    top: calc(50% - 2rem);
+    top: calc(50% - 1rem);
 }
 
 #dialogWebApp {
@@ -479,7 +521,7 @@ body.web-app #alert-dialog {
     display: block;
 }
 #topic-selection-scroll {
-    height: 100%; width: 100%;
+    max-height: 100%; width: 100%;
     max-width: 50rem;
     overflow: scroll;
     gap: 1rem;
@@ -491,7 +533,7 @@ body.web-app #alert-dialog {
     mask-image: linear-gradient(#00000000 0%, #000 5rem, #000 calc(100% - 5rem), #00000000 100%);
 }
 .topic {
-    min-width: 10rem; height: auto;
+    min-width: 6rem; height: auto;
     flex-grow: 1;
     box-shadow: 0 0 12px -3px #000;
     border-radius: 1rem;
@@ -502,10 +544,11 @@ body.web-app #alert-dialog {
     align-items: center;
     border: 1px solid #c3c3cf4a;
     cursor: pointer;
-    transition: box-shadow .1s ease-out, left .1s ease-out, background-color .1s ease-out, scale .1s ease-out,  color .1s ease-out;
+    transition: box-shadow .1s ease-out, left .1s ease-out, background-color .1s ease-out, scale .1s ease-out,  color .1s ease-out, filter .1s ease-out;
 }
 .topic:hover {
     box-shadow: 0 0 16px -1px #000;
+    filter: brightness(.6);
 }
 .topic:has(input[type=checkbox]:checked) {
     background-color: #17953463;
@@ -552,7 +595,7 @@ body.web-app #alert-dialog {
     box-shadow: 0 0 3px 0 #134217;
   }
 .topic:hover .topic-checkbox::after {
-    scale: 1.1;
+    scale: 1.2;
   }
   .topic input[type=checkbox]:active::after {
     scale: .8 !important;
@@ -567,7 +610,7 @@ body.web-app #alert-dialog {
     all: unset;
     background-color: #122a2e;
     position: fixed;
-    bottom: 4rem; left: 50%;
+    bottom: 38px; left: 50%;
     z-index: 10;
     padding: 1rem 1.5rem;
     box-shadow: 0 0 10px -2px #000;
@@ -592,6 +635,22 @@ body.web-app #alert-dialog {
 #select-all-topics:hover, #exit-selection:hover {
     box-shadow: 0 0 5px -5px #000;
     filter: brightness(.8);
+}
+
+#start-buttons {
+    width: 100%;
+    /* max-width: 26.1rem; */
+    display: flex;
+    flex-wrap: wrap;
+    flex-wrap: wrap-reverse;
+    gap: 1rem;
+    padding: 0 1.5rem;
+}
+#start-buttons button {
+    flex: 1 0 0;
+    height: 3rem;
+    min-width: 10rem;
+    max-width: 100%;
 }
 
 /* overwrites */
@@ -632,6 +691,7 @@ body.web-app #alert-dialog {
     }
   }
   
+
 @media screen and (max-width: 400px) {
     #logo {
         display: none;
@@ -672,4 +732,11 @@ body #changeLanguage:active {
     filter: none;
     background-color: #0000006e;
     color: #ede8dd3b;
+}
+
+@media screen and (max-width: 360px) {
+    #start-buttons {
+        padding: 0;
+        max-width: 15rem;
+    }
 }

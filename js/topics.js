@@ -14,7 +14,7 @@ window.topics = {
     "Rock", "Pop", "Jazz", "Klassik", "Hip-Hop",
     "Electronic", "Country", "Reggae", "Blues", "Metal", "Folk"
   ],
-  persoenlichkeiten: [
+  persönlichkeiten: [
     "Albert Einstein", "Angela Merkel",
     "Nelson Mandela", "Greta Thunberg", "Barack Obama"
   ],
@@ -22,7 +22,7 @@ window.topics = {
     "Lehrperson", "Softwareentwicklerin", "Architektin", "Journalistin",
     "Köchin", "Mechanikerin", "Grafikdesignerin", "Ärztin", "Pilotin"
   ],
-  staedte: [
+  städte: [
     "Zürich", "Genf", "Bern", "Basel", "Lausanne",
     "New York", "Tokio", "London", "Paris", "Hongkong",
     "Berlin", "Rom", "Moskau", "Dubai"
