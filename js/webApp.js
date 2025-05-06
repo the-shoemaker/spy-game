@@ -34,7 +34,7 @@
           || window.matchMedia('(display-mode: standalone)').matches;
     }
     function isMobileDevice() {
-      return /Mobi|Android|iP(hone|od|ad)|Windows Phone|webOS/.test(ua);
+      return /Mobi|Android|iP(hone|od|ad)|Windows Phone|webOS/i.test(navigator.userAgent);
     }
 
     function showDialog() {
