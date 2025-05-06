@@ -1,9 +1,3 @@
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/service-worker.js')
-    .then(() => console.log('Service Worker registriert'))
-    .catch(err => console.error('Service Worker fehlgeschlagen', err));
-}
-
 // programm.js
 window.addEventListener('DOMContentLoaded', () => {
   // Dialog-Referenzen

@@ -38,7 +38,7 @@ self.addEventListener('install', event => {
   );
 });
 
-// Activate: Clean up old caches
+// Activate: Alte Caches löschen
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
@@ -48,14 +48,15 @@ self.addEventListener('activate', event => {
       )
     )
   );
+  self.clients.claim();
 });
 
-// Fetch handler: network-first for .txt, cache-first for others
+// Fetch handler
 self.addEventListener('fetch', event => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Network-first for text files (how-to txt)
+  // 1. Network-first für .txt-Dateien
   if (url.pathname.endsWith('.txt')) {
     event.respondWith(
       fetch(request)
@@ -71,19 +72,35 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // For navigation, offline fallback
+  // 2. Navigation: Cache-first, dann Netzwerk und Cache-Update, sonst offline.html
   if (request.mode === 'navigate') {
     event.respondWith(
-      fetch(request)
-        .catch(() => caches.match(OFFLINE_PAGE))
+      caches.match(request).then(cached => {
+        if (cached) {
+          return cached;
+        }
+        return fetch(request)
+          .then(response => {
+            // erfolgreiche Navigation ins Cache schreiben
+            if (response.ok) {
+              const copy = response.clone();
+              caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
+            }
+            return response;
+          })
+          .catch(() => caches.match(OFFLINE_PAGE));
+      })
     );
     return;
   }
 
-  // Default: cache-first
+  // 3. Default: Cache-first, dann Netzwerk mit Cache-Persistence
   event.respondWith(
     caches.match(request).then(cached => {
-      return cached || fetch(request).then(response => {
+      if (cached) {
+        return cached;
+      }
+      return fetch(request).then(response => {
         if (response.ok) {
           const copy = response.clone();
           caches.open(CACHE_NAME).then(cache => cache.put(request, copy));

@@ -137,6 +137,16 @@
   <script src="/js/restor-player-count.js" defer></script>
 
   <script src="/js/safari-fix.js"></script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
+          .then(reg => console.log('Service Worker registriert unter Scope', reg.scope))
+          .catch(err => console.error('Service Worker-Registrierung fehlgeschlagen:', err));
+      });
+    }
+  </script>
 </body>
 </html>
 

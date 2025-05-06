@@ -24,6 +24,7 @@
         "Themenauswahl": "Topic Selection",
         "Alle Themen": "Alle Topics",
         "Load Failed": "Lade Fehler",
+        "Fehler beim Lade": "Loading Error",
         "Fehler": "Error",
         "Impressum": "Imprint",
         "Spion": "Spy",
