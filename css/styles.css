@@ -152,7 +152,7 @@ input:user-invalid {
     color: #ff1313;
     background-color: #60191946;
 }
-input:user-valid {
+input:user-valid, input.valid {
     border: 1px solid #13ff3a57;
     color: #13ff27;
     background-color: #19602e46;

@@ -16,6 +16,7 @@ const ASSETS = [
   '/js/topics-en.js',
   '/js/how-to.js',
   '/js/safari-fix.js',
+  '/js/restor-player-count.js',
   '/datenschutz/index.html',
   '/impressum/index.html',
   '/images/info.svg',
