@@ -734,7 +734,7 @@ body #changeLanguage:active {
     color: #ede8dd3b;
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 457px) {
     #start-buttons {
         padding: 0;
         max-width: 15rem;
