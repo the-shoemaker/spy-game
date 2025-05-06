@@ -121,5 +121,29 @@ a:visited {
     };
     document.head.appendChild(script);
   </script>
+
+
+<input type="checkbox" switch id="haptic-switch" style="position:absolute;opacity:0;">
+<label for="haptic-switch"></label>
+<script>
+  // Referenz auf unser verstecktes Label
+  const hapticLabel = document.querySelector('label[for="haptic-switch"]');
+
+  // Führt zwei Klicks auf das Label aus und erzeugt so den Taptic-Puls
+  function triggerHaptic() {
+    hapticLabel.click();
+    hapticLabel.click();
+  }
+
+  // Klick-Listener für Links und Buttons
+  document.querySelectorAll('a, button').forEach(el =>
+    el.addEventListener('click', triggerHaptic)
+  );
+
+  // Focus-Listener für alle Inputs
+  document.querySelectorAll('input').forEach(el =>
+    el.addEventListener('click', triggerHaptic)
+  );
+</script>
 </body>
 </html>

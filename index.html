@@ -93,6 +93,42 @@
   </div>
 
   <!-- scripts -->
+  <input type="checkbox" switch id="haptic-switch" style="position:absolute;opacity:0;">
+  <label for="haptic-switch"></label>
+  <script>
+    // Referenz auf unser verstecktes Label
+    const hapticLabel = document.querySelector('label[for="haptic-switch"]');
+
+    // Führt zwei Klicks auf das Label aus und erzeugt so den Taptic-Puls
+    function triggerHaptic() {
+      hapticLabel.click();
+      hapticLabel.click();
+    }
+
+    // Klick-Listener für Links und Buttons
+    document.querySelectorAll('a, button').forEach(el =>
+      el.addEventListener('click', triggerHaptic)
+    );
+
+    document.body.addEventListener('click', e => {
+      // only trigger on real <a> or <button>
+      if (e.target.matches('a, button')) {
+        triggerHaptic();
+      }
+    });
+
+    // Focus-Listener für alle Inputs
+    document.querySelectorAll('input').forEach(el =>
+      el.addEventListener('click', triggerHaptic)
+    );
+
+    document.body.addEventListener('click', e => {
+      // only trigger on real <a> or <button>
+      if (e.target.matches('input')) {
+        triggerHaptic();
+      }
+    });
+  </script>
 
   <script src="/js/langSwitcher.js" defer></script>
   <script src="/js/programm.js" defer></script>

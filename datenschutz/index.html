@@ -94,5 +94,27 @@ eval(unescape('%76%61%72%20%73%3d%27%61%6d%6c%69%6f%74%63%3a%6e%6f%61%74%74%63%6
  zu senden.<br><br>Sie haben ausserdem das Recht, Ihre Daten in einem gängigen Dateiformat zu erhalten, wenn wir Ihre Daten automatisiert bearbeiten, und wenn:</p><ul><li>Sie Ihre Einwilligung für die Bearbeitung dieser Daten erteilt haben; oder</li><li>Sie Daten im Zusammenhang mit dem Abschluss oder der Abwicklung eines Vertrags bekannt gegeben haben.</li></ul><p>Wir können die Auskunft bzw. Datenherausgabe einschränken oder verweigern, wenn dies unseren gesetzlichen Verpflichtungen, berechtigten eigenen oder öffentlichen Interessen oder Interessen einer Drittperson entgegensteht.<br><br>Die Bearbeitung Ihres Gesuchs unterliegt der gesetzlichen Bearbeitungsfrist von 30 Tagen. Diese Frist dürfen wir jedoch aufgrund von hohem Anfragevolumen, aus rechtlichen oder technischen Gründen oder weil wir nähere Angaben von Ihnen benötigen, verlängern. Sie werden über die Fristverlängerung rechtzeitig mindestens in Textform informiert.</p><br><h4>b. Löschung und Berichtigung</h4><br><p>Sie haben jederzeit die Möglichkeit, die Löschung oder Berichtigung Ihrer Daten zu verlangen. Wir können das Gesuch abweisen, wenn gesetzliche Vorschriften uns zur längeren bzw. unveränderten Aufbewahrung verpflichten oder ein Erlaubnistatbestand Ihrem Gesuch entgegensteht.<br><br>Bitte beachten Sie, dass die Ausübung Ihrer Rechte unter Umständen im Konflikt mit vertraglichen Abmachungen stehen und entsprechende Auswirkungen auf die Vertragsdurchführung haben kann (z.B. vorzeitige Vertragsauflösung oder Kostenfolgen).</p><br><h4>c. Rechtsweg</h4><p>Sind Sie von der Bearbeitung personenbezogener Daten betroffen, haben Sie das Recht, Ihre Rechte gerichtlich durchzusetzen oder bei der zuständigen Aufsichtsbehörde eine Meldung einzureichen. Die zuständige Aufsichtsbehörde in der Schweiz ist der Eidgenössische Datenschutz- und Öffentlichkeitsbeauftragte: https://www.edoeb.admin.ch</p><br><h3>3.8 Änderungen an der Datenschutzerklärung</h3><p>Wir können diese Datenschutzerklärung jederzeit ändern. Die Änderungen werden auf spy.dan-space.ch veröffentlicht, Sie werden nicht gesondert darüber informiert.</p><br><h2>4. Einzelne Datenverarbeitungsvorgänge</h2><br><h3>4.1 Bereitstellen der Webseite und Erstellung von Logfiles</h3><br><h4>Welche Informationen erhalten wir und wie nutzen wir sie?</h4><p>Indem Sie spy.dan-space.ch besuchen, werden auf unseren Servern oder auf Servern von Dienstleistungen und Produkten, die wir beziehen und / oder installiert haben, bestimmte Daten automatisch zu Zwecken der Systemadministration, für statistische oder für Sicherungszwecke oder für Trackingzwecke gespeichert. Es handelt sich dabei um:</p><ul><li>den Namen Ihres Internetserviceproviders;</li><li>Ihre IP-Adresse (unter Umständen);</li><li>die Version Ihrer Browser-Software;</li><li>das Betriebssystem des Rechners mit dem auf die URL zugegriffen wird;</li><li>das Datum und die Uhrzeit des Zugriffs;</li><li>die Webseite, von der aus Sie URL besuchen;</li><li>die Suchwörter die Sie benutzt haben, um die URL finden.</li></ul><br><h4>Weshalb dürfen wir diese Daten bearbeiten?</h4><p>Diese Daten können keiner bestimmten Person zugeordnet werden und es findet keine Zusammenführung dieser Daten mit anderen Datenquellen statt. Die Speicherung der Logfiles erfolgt, um die Funktionsfähigkeit der Webseite zu garantieren und zur Sicherstellung der Sicherheit unserer informationstechnischen Systeme. Hierin besteht unser berechtigtes Interesse.</p><br><h4>Wie können Sie die Datenerfassung verhindern?</h4><p>Die Daten werden nur solange gespeichert, wie dies zur Erreichung des Zweckes Ihrer Erhebung notwendig ist. Dementsprechend werden die Daten nach Beendigung jeder Sitzung gelöscht. Die Speicherung der Logfiles ist für den Betrieb der Webseite zwingend notwendig, Sie haben daher keine Möglichkeit dagegen Widerspruch zu erheben.</p><br>  <br><br><h3>BrainBox Generatoren</h3> BrainBox Generatoren ist ein Dienst der <a style="color:inherit;" href="https://brainbox.swiss/" rel="nofollow" target="_blank">BrainBox Solutions GmbH</a>, um alle datenschutzrelevanten Dienste auf einer Website zu erkennen und unter anderem damit bei der Erstellung der Datenschutzerklärung zu helfen. Dabei werden keine personenbezogenen Daten erfasst oder verarbeitet. 
 
     </div>
+    <input type="checkbox" switch id="haptic-switch" style="position:absolute;opacity:0;">
+    <label for="haptic-switch"></label>
+    <script>
+      // Referenz auf unser verstecktes Label
+      const hapticLabel = document.querySelector('label[for="haptic-switch"]');
+  
+      // Führt zwei Klicks auf das Label aus und erzeugt so den Taptic-Puls
+      function triggerHaptic() {
+        hapticLabel.click();
+        hapticLabel.click();
+      }
+  
+      // Klick-Listener für Links und Buttons
+      document.querySelectorAll('a, button').forEach(el =>
+        el.addEventListener('click', triggerHaptic)
+      );
+  
+      // Focus-Listener für alle Inputs
+      document.querySelectorAll('input').forEach(el =>
+        el.addEventListener('click', triggerHaptic)
+      );
+    </script>
 </body>
 </html>
