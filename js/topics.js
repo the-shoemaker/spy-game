@@ -14,6 +14,10 @@ window.topics = {
     "Rock", "Pop", "Jazz", "Klassik", "Hip-Hop",
     "Electronic", "Country", "Reggae", "Blues", "Metal", "Folk"
   ],
+  schwachstellen: [
+    "Kundenreklamationen", "Hohe Kosten", "Lange Durchlaufzeiten", "Redundanzen",
+    "Medienbrüche", "zu viele Schnittstellen"
+  ],
   persönlichkeiten: [
     "Albert Einstein", "Angela Merkel",
     "Nelson Mandela", "Greta Thunberg", "Barack Obama"
