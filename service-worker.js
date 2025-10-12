@@ -1,4 +1,3 @@
-// service-worker.js
 const CACHE_NAME = 'spy-app-v1';
 const OFFLINE_PAGE = '/offline.html';
 const ASSETS = [
@@ -33,7 +32,15 @@ const ASSETS = [
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(ASSETS))
+      .then(async cache => {
+        for (const asset of ASSETS) {
+          try {
+            await cache.add(asset);
+          } catch (err) {
+            console.warn('Failed to cache', asset, err);
+          }
+        }
+      })
       .then(() => self.skipWaiting())
   );
 });
@@ -56,7 +63,7 @@ self.addEventListener('fetch', event => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // 1. Network-first für .txt-Dateien
+  // 1. Network-first for .txt files
   if (url.pathname.endsWith('.txt')) {
     event.respondWith(
       fetch(request)
@@ -72,7 +79,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // 2. Navigation: Cache-first, dann Netzwerk und Cache-Update, sonst offline.html
+  // 2. Navigation: Cache-first, then network with cache update, else offline.html
   if (request.mode === 'navigate') {
     event.respondWith(
       caches.match(request).then(cached => {
@@ -81,7 +88,6 @@ self.addEventListener('fetch', event => {
         }
         return fetch(request)
           .then(response => {
-            // erfolgreiche Navigation ins Cache schreiben
             if (response.ok) {
               const copy = response.clone();
               caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
@@ -94,7 +100,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // 3. Default: Cache-first, dann Netzwerk mit Cache-Persistence
+  // 3. Default: Cache-first, then network with cache persistence
   event.respondWith(
     caches.match(request).then(cached => {
       if (cached) {

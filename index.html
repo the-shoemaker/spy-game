@@ -4,24 +4,34 @@
   <meta charset="UTF-8">
   <title>Spion Spiel</title>
   <meta name="viewport"
-      content="width=device-width,
-               initial-scale=1.0,
-               maximum-scale=1.0,
-               viewport-fit=cover,
-               user-scalable=no">
+        content="width=device-width,
+                 initial-scale=1.0,
+                 maximum-scale=1.0,
+                 viewport-fit=cover,
+                 user-scalable=no">
+  
+  <!-- App identity -->
+  <meta name="application-name" content="Spion Spiel">
   <meta name="description" content="The game Spy is a party game where all players except one are given a common topic — for example, India. One player, the spy, receives no information. The goal for the others is to identify the spy by asking and answering questions about the topic.">
+  
+  <!-- PWA support -->
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#0A363E">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Spion Spiel">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
+  <!-- SEO / Verification -->
   <meta name="google-site-verification" content="qToCIMAGnkVqEOcu7TmQWETekJzMnAuN5LIxX9nGzHs" />
 
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-  <link rel="manifest" href="/site.webmanifest">
-
+  <!-- Styles -->
   <link rel="stylesheet" href="/css/styles.css">
 
-  <link rel="icon" type="image/png" href="/favicons/favicon-96x96.png" sizes="96x96" />
-  <link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+  <!-- Icons -->
+  <link rel="icon" type="image/png" href="/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
 </head>
 <body>
   <button id="changeLanguage"><span id="de" class="active">DE</span><span id="pipe">|</span><span id="en">EN</span></button>
@@ -141,9 +151,13 @@
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
-          .then(reg => console.log('Service Worker registriert unter Scope', reg.scope))
-          .catch(err => console.error('Service Worker-Registrierung fehlgeschlagen:', err));
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(reg => {
+            console.log('Service Worker registered with scope:', reg.scope);
+          })
+          .catch(err => {
+            console.error('Service Worker registration failed:', err);
+          });
       });
     }
   </script>
