@@ -1,9 +1,8 @@
-const CACHE_NAME = 'spy-app-v1';
-const OFFLINE_PAGE = '/offline.html';
+const CACHE_NAME = 'spy-app-v3';
+const OFFLINE_PAGE = '/index.html';
 const ASSETS = [
   '/',
   '/index.html',
-  OFFLINE_PAGE,
   '/site.webmanifest',
   '/icons/icon-192.png',
   '/icons/icon-512.png',
@@ -25,94 +24,62 @@ const ASSETS = [
   '/how-to-en.html',
   '/README-EN.html',
   '/README-DE.html',
-  '/README.md',
+  '/README.md'
 ];
 
-// Install: Cache core assets
+// INSTALL – pre-cache all core assets
 self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(async cache => {
-        for (const asset of ASSETS) {
-          try {
-            await cache.add(asset);
-          } catch (err) {
-            console.warn('Failed to cache', asset, err);
-          }
-        }
-      })
-      .then(() => self.skipWaiting())
-  );
-});
-
-// Activate: Alte Caches löschen
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys.filter(key => key !== CACHE_NAME)
-            .map(key => caches.delete(key))
-      )
-    )
-  );
-  self.clients.claim();
-});
-
-// Fetch handler
-self.addEventListener('fetch', event => {
-  const { request } = event;
-  const url = new URL(request.url);
-
-  // 1. Network-first for .txt files
-  if (url.pathname.endsWith('.txt')) {
-    event.respondWith(
-      fetch(request)
-        .then(response => {
-          if (response.ok) {
-            const copy = response.clone();
-            caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
-          }
-          return response;
-        })
-        .catch(() => caches.match(request))
-    );
-    return;
-  }
-
-  // 2. Navigation: Cache-first, then network with cache update, else offline.html
-  if (request.mode === 'navigate') {
-    event.respondWith(
-      caches.match(request).then(cached => {
-        if (cached) {
-          return cached;
-        }
-        return fetch(request)
-          .then(response => {
-            if (response.ok) {
-              const copy = response.clone();
-              caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
-            }
-            return response;
-          })
-          .catch(() => caches.match(OFFLINE_PAGE));
-      })
-    );
-    return;
-  }
-
-  // 3. Default: Cache-first, then network with cache persistence
-  event.respondWith(
-    caches.match(request).then(cached => {
-      if (cached) {
-        return cached;
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    for (const asset of ASSETS) {
+      try {
+        await cache.add(asset);
+      } catch (err) {
+        console.warn('[SW] Failed to cache', asset, err);
       }
-      return fetch(request).then(response => {
-        if (response.ok) {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
-        }
-        return response;
-      });
-    })
-  );
+    }
+    await self.skipWaiting();
+  })());
+});
+
+// ACTIVATE – clean old caches
+self.addEventListener('activate', event => {
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    for (const key of keys) {
+      if (key !== CACHE_NAME) {
+        await caches.delete(key);
+      }
+    }
+    await self.clients.claim();
+  })());
+});
+
+// FETCH – cache-first with offline fallback
+self.addEventListener('fetch', event => {
+  const request = event.request;
+
+  // Only handle same-origin GETs
+  if (request.method !== 'GET' || new URL(request.url).origin !== location.origin)
+    return;
+
+  event.respondWith((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    const cached = await cache.match(request);
+    if (cached) return cached;
+
+    try {
+      const response = await fetch(request);
+      if (response && response.ok) {
+        cache.put(request, response.clone());
+      }
+      return response;
+    } catch (err) {
+      // Offline fallback only for navigation requests
+      if (request.mode === 'navigate') {
+        return cache.match(OFFLINE_PAGE);
+      }
+      return new Response('Offline', { status: 503, statusText: 'Offline' });
+    }
+  })());
 });
