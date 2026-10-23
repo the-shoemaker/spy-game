@@ -1,4 +1,4 @@
-const CACHE_NAME = 'spy-app-v4-input-focus';
+const CACHE_NAME = 'spy-app-v5-input-focus';
 const OFFLINE_PAGE = '/index.html';
 const ASSETS = [
   '/',
@@ -33,7 +33,7 @@ self.addEventListener('install', event => {
     const cache = await caches.open(CACHE_NAME);
     for (const asset of ASSETS) {
       try {
-        await cache.add(asset);
+        await cache.add(new Request(asset, { cache: 'reload' }));
       } catch (err) {
         console.warn('[SW] Failed to cache', asset, err);
       }
