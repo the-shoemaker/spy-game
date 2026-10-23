@@ -1,4 +1,4 @@
-const CACHE_NAME = 'spy-app-v3';
+const CACHE_NAME = 'spy-app-v4-input-focus';
 const OFFLINE_PAGE = '/index.html';
 const ASSETS = [
   '/',

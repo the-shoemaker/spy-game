@@ -127,17 +127,7 @@
       }
     });
 
-    // Focus-Listener für alle Inputs
-    document.querySelectorAll('input').forEach(el =>
-      el.addEventListener('click', triggerHaptic)
-    );
-
-    document.body.addEventListener('click', e => {
-      // only trigger on real <a> or <button>
-      if (e.target.matches('input')) {
-        triggerHaptic();
-      }
-    });
+    // Text inputs keep native focus; haptics are only for links and buttons.
   </script>
 
   <script src="/js/lang-switcher.js" defer></script>
