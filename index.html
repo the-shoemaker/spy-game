@@ -141,7 +141,7 @@
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
+        navigator.serviceWorker.register('/service-worker.js?v=20261023-input-focus')
           .then(reg => {
             console.log('Service Worker registered with scope:', reg.scope);
           })
